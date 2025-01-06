@@ -26,8 +26,8 @@ def ft_std(values: list[int|float]) -> float:
         summation += (n - mean) ** 2
     return sqrt(summation / (len(values) - 1))
 
-def ft_min(values: list[int|float]) -> float:
-    minimum = values[0]
+def ft_min(values: list[int|float]) -> int|float:
+    minimum: int|float = values[0]
     for value in values:
         if value < minimum:
             minimum = value
@@ -51,8 +51,8 @@ def ft_q2(values: list[int|float]) -> float:
 def ft_q3(values: list[int|float]) -> float:
     return ft_q(values, 0.75)
 
-def ft_max(values: list[int|float]) -> float:
-    maximum = values[0]
+def ft_max(values: list[int|float]) -> int|float:
+    maximum: int|float = values[0]
     for value in values:
         if value > maximum:
             maximum = value
@@ -63,9 +63,23 @@ def ft_max(values: list[int|float]) -> float:
 def normalize_value(value: int|float, max: int|float, min: int|float) -> float:
     return ((value - min) / (max - min))
 
-def normalize_values(values: list[int|float]) -> list[float]:
-    max, min = ft_max(values), ft_min(values)
+def normalize_values(values: list[int|float], max: int|float=None, min: int|float=None) -> list[float]:
+    max = ft_max(values) if max is None else max
+    min = ft_min(values) if min is None else min
     return [normalize_value(value, max, min) for value in values]
+
+
+
+def ft_mse(pred_values: list[int|float], obs_values: list[int|float], sort: bool=False) -> float:
+    if sort:
+        pred_values = sorted(pred_values)
+        obs_values = sorted(obs_values)
+    count = 0
+    summation = 0
+    for pred, obs in zip(pred_values, obs_values):
+        summation += (obs - pred) ** 2
+        count += 1
+    return summation / count
 
 
 
